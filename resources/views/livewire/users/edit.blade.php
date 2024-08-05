@@ -95,6 +95,8 @@ new class extends Component {
                     :options="$languages"
                     searchable/>
 
+                <x-editor wire:model="bio" label="Bio" hint="The great biography"/>
+
                 <x-slot:actions>
                     <x-button label="Cancel" link="/users"/>
                     {{-- The important thing here is `type="submit"` --}}
