@@ -78,25 +78,43 @@ new class extends Component {
     <div class="grid gap-5 lg:grid-cols-2">
         <div>
             <x-form wire:submit="save">
-                <x-file label="Avatar" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
-                    <img src="{{ $user->avatar ?? '/empty-user.jpg' }}" class="h-40 rounded-lg" alt="File Avatar"/>
-                </x-file>
+                {{--  Basic section  --}}
+                <div class="lg:grid grid-cols-5">
+                    <div class="col-span-2">
+                        <x-header title="Basic" subtitle="Basic info from user" size="text-2xl"/>
+                    </div>
+                    <div class="col-span-3 grid gap-3">
+                        <x-file label="Avatar" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
+                            <img src="{{ $user->avatar ?? '/empty-user.jpg' }}"
+                                 class="h-40 rounded-lg"
+                                 alt="File Avatar"/>
+                        </x-file>
 
-                <x-input label="Name" wire:model="name"/>
+                        <x-input label="Name" wire:model="name"/>
 
-                <x-input label="Email" wire:model="email"/>
+                        <x-input label="Email" wire:model="email"/>
 
-                <x-select label="Country" wire:model="country_id" :options="$countries" placeholder="---"/>
+                        <x-select label="Country" wire:model="country_id" :options="$countries" placeholder="---"/>
+                    </div>
+                </div>
+                {{--  Details section --}}
+                <hr class="my-5"/>
 
-                {{-- Multi selection --}}
-                <x-choices-offline
-                    label="My languages"
-                    wire:model="my_languages"
-                    :options="$languages"
-                    searchable/>
+                <div class="lg:grid grid-cols-5">
+                    <div class="col-span-2">
+                        <x-header title="Details" subtitle="More about the user" size="text-2xl"/>
+                    </div>
+                    <div class="col-span-3 grid gap-3">
+                        {{-- Multi selection --}}
+                        <x-choices-offline
+                            label="My languages"
+                            wire:model="my_languages"
+                            :options="$languages"
+                            searchable/>
 
-                <x-editor wire:model="bio" label="Bio" hint="The great biography"/>
-
+                        <x-editor wire:model="bio" label="Bio" hint="The great biography"/>
+                    </div>
+                </div>
                 <x-slot:actions>
                     <x-button label="Cancel" link="/users"/>
                     {{-- The important thing here is `type="submit"` --}}
