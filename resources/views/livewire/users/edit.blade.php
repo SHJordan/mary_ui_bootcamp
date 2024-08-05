@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Country;
+use App\Models\Language;
 use App\Models\User;
 use Livewire\Attributes\Rule;
 use Livewire\Volt\Component;
@@ -28,17 +29,25 @@ new class extends Component {
     #[Rule('sometimes')]
     public ?int $country_id = null;
 
+    // Selected languages
+    #[Rule('required')]
+    public array $my_languages = [];
+
     // We also need this to fill Countries combobox on upcoming form
     public function with(): array
     {
         return [
-            'countries' => Country::all()
+            'countries' => Country::all(),
+            'languages' => Language::all(), // Available Languages
         ];
     }
 
     public function mount(): void
     {
         $this->fill($this->user);
+
+        // Fill the selected languages property
+        $this->my_languages = $this->user->languages->pluck('id')->all();
     }
 
     public function save(): void
@@ -48,6 +57,9 @@ new class extends Component {
 
         // Update
         $this->user->update($data);
+
+        // Sync selection
+        $this->user->languages()->sync($this->my_languages);
 
         // Upload file and save the avatar `url` on User model
         if ($this->photo) {
@@ -75,6 +87,13 @@ new class extends Component {
                 <x-input label="Email" wire:model="email"/>
 
                 <x-select label="Country" wire:model="country_id" :options="$countries" placeholder="---"/>
+
+                {{-- Multi selection --}}
+                <x-choices-offline
+                    label="My languages"
+                    wire:model="my_languages"
+                    :options="$languages"
+                    searchable/>
 
                 <x-slot:actions>
                     <x-button label="Cancel" link="/users"/>
