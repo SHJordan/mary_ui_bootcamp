@@ -26,9 +26,10 @@ new class extends Component {
     }
 
     // Delete action
-    public function delete($id): void
+    public function delete(User $user): void
     {
-        $this->warning("Will delete #$id", 'It is fake.', position: 'toast-bottom');
+        $user->delete();
+        $this->warning("$user->name deleted", 'Good bye!', position: 'toast-bottom');
     }
 
     // Table headers
