@@ -37,7 +37,7 @@ new class extends Component {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
-            ['key' => 'country_name', 'label' => 'Country'],
+            ['key' => 'country_name', 'label' => 'Country', 'class' => 'hidden lg:table-cell'],
             ['key' => 'email', 'label' => 'E-mail', 'sortable' => false],
         ];
     }
@@ -45,7 +45,7 @@ new class extends Component {
     // Reset pagination when any component property changes
     public function updated($property): void
     {
-        if (!is_array($property) && $property != "") {
+        if (!is_array($property) && $property !== "") {
             $this->resetPage();
         }
     }
