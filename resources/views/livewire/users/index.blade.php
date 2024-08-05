@@ -19,6 +19,21 @@ new class extends Component {
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
+    public function countActiveFilters(): string|int
+    {
+        $count = 0;
+
+        if ($this->search !== '') {
+            $count++;
+        }
+
+        if ($this->country_id !== 0) {
+            $count++;
+        }
+
+        return $count===0 ? '' : $count;
+    }
+
     // Clear filters
     public function clear(): void
     {
@@ -86,7 +101,11 @@ new class extends Component {
             <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass"/>
         </x-slot:middle>
         <x-slot:actions>
-            <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel"/>
+            <x-button badge="{{ $this->countActiveFilters() }}"
+                      label="Filters"
+                      @click="$wire.drawer = true"
+                      responsive
+                      icon="o-funnel"/>
         </x-slot:actions>
     </x-header>
 
@@ -110,7 +129,11 @@ new class extends Component {
                  icon="o-magnifying-glass"
                  @keydown.enter="$wire.drawer = false"/>
 
-        <x-select placeholder="Country" wire:model.live="country_id" :options="$countries" icon="o-flag" placeholder-value="0" />
+        <x-select placeholder="Country"
+                  wire:model.live="country_id"
+                  :options="$countries"
+                  icon="o-flag"
+                  placeholder-value="0"/>
 
         <x-slot:actions>
             <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner/>
