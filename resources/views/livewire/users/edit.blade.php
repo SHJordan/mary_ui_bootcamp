@@ -4,11 +4,12 @@ use App\Models\Country;
 use App\Models\User;
 use Livewire\Attributes\Rule;
 use Livewire\Volt\Component;
+use Livewire\WithFileUploads;
 use Mary\Traits\Toast;
 
 new class extends Component {
     // We will use it later
-    use Toast;
+    use Toast, WithFileUploads;
 
     // Component parameter
     public User $user;
@@ -19,6 +20,9 @@ new class extends Component {
 
     #[Rule('required|email')]
     public string $email = '';
+
+    #[Rule('nullable|image|max:1024')]
+    public $photo;
 
     // Optional
     #[Rule('sometimes')]
@@ -45,6 +49,12 @@ new class extends Component {
         // Update
         $this->user->update($data);
 
+        // Upload file and save the avatar `url` on User model
+        if ($this->photo) {
+            $url = $this->photo->store('users', 'public');
+            $this->user->update(['avatar' => "/storage/$url"]);
+        }
+
         // You can toast and redirect to any route
         $this->success('User updated with success.', redirectTo: '/users');
     }
@@ -54,8 +64,14 @@ new class extends Component {
     <x-header title="Update {{ $user->name }}" separator/>
 
     <x-form wire:submit="save">
+        <x-file label="Avatar" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
+            <img src="{{ $user->avatar ?? '/empty-user.jpg' }}" class="h-40 rounded-lg" alt="File Avatar"/>
+        </x-file>
+
         <x-input label="Name" wire:model="name"/>
+
         <x-input label="Email" wire:model="email"/>
+
         <x-select label="Country" wire:model="country_id" :options="$countries" placeholder="---"/>
 
         <x-slot:actions>
