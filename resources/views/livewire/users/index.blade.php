@@ -31,7 +31,7 @@ new class extends Component {
             $count++;
         }
 
-        return $count===0 ? '' : $count;
+        return $count === 0 ? '' : $count;
     }
 
     // Clear filters
@@ -53,6 +53,7 @@ new class extends Component {
     public function headers(): array
     {
         return [
+            ['key' => 'avatar', 'label' => '', 'class' => 'w-1'],
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
             ['key' => 'country_name', 'label' => 'Country', 'class' => 'hidden lg:table-cell'],
@@ -106,6 +107,7 @@ new class extends Component {
                       @click="$wire.drawer = true"
                       responsive
                       icon="o-funnel"/>
+            <x-button label="Create" link="/users/create" responsive icon="o-plus" class="btn-primary"/>
         </x-slot:actions>
     </x-header>
 
@@ -122,6 +124,9 @@ new class extends Component {
                       wire:confirm="Are you sure?"
                       spinner
                       class="btn-ghost btn-sm text-red-500"/>
+            @endscope
+            @scope('cell_avatar', $user)
+            <x-avatar image="{{ $user->avatar ?? '/empty-user.jpg' }}" class="!w-10"/>
             @endscope
         </x-table>
     </x-card>
