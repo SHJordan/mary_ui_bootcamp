@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,6 +15,7 @@ new class extends Component {
     public string $search = '';
 
     public bool $drawer = false;
+    public int $country_id = 0;
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -62,6 +64,7 @@ new class extends Component {
         return User::query()
             ->withAggregate('country', 'name')
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
+            ->when($this->country_id, fn(Builder $q) => $q->where('country_id', $this->country_id))
             ->orderBy(...array_values($this->sortBy))
             ->paginate(5); // No more `->get()`
     }
@@ -70,7 +73,8 @@ new class extends Component {
     {
         return [
             'users' => $this->users(),
-            'headers' => $this->headers()
+            'headers' => $this->headers(),
+            'countries' => Country::all(),
         ];
     }
 }; ?>
@@ -105,6 +109,8 @@ new class extends Component {
                  wire:model.live.debounce="search"
                  icon="o-magnifying-glass"
                  @keydown.enter="$wire.drawer = false"/>
+
+        <x-select placeholder="Country" wire:model.live="country_id" :options="$countries" icon="o-flag" placeholder-value="0" />
 
         <x-slot:actions>
             <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner/>
