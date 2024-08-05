@@ -10,11 +10,14 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "livewire/volt": "^1.6",
-        "robsontenorio/mary": "^1.35"
+        "robsontenorio/mary": "^1.35",
+        "ext-pdo": "*"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest"
+        ,
         "fakerphp/faker": "^1.23",
-        "laravel/pint": "^1.13",
+        "laravel/pint": "^1.17",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",

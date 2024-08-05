@@ -18,7 +18,7 @@ class LanguageSeeder extends Seeder
             ['name' => 'English'],
             ['name' => 'French'],
             ['name' => 'Portuguese'],
-            ['name' => 'Hindi']
+            ['name' => 'Hindi'],
         ]);
     }
 }

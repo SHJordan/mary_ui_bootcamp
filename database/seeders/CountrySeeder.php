@@ -19,16 +19,16 @@ class CountrySeeder extends Seeder
 
         Country::insert([
             [
-                'name' => 'Brazil'
+                'name' => 'Brazil',
             ],
             [
-                'name' => 'India'
+                'name' => 'India',
             ],
             [
-                'name' => 'United States'
+                'name' => 'United States',
             ],
             [
-                'name' => 'France'
+                'name' => 'France',
             ],
         ]);
     }
