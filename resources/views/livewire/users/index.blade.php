@@ -33,7 +33,7 @@ new class extends Component {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
-            ['key' => 'age', 'label' => 'Age', 'class' => 'w-20'],
+            ['key' => 'country_name', 'label' => 'Country'],
             ['key' => 'email', 'label' => 'E-mail', 'sortable' => false],
         ];
     }
@@ -45,17 +45,13 @@ new class extends Component {
      * Please, refer to maryUI docs to see the eloquent examples.
      */
     public function users(): Collection
-    {
-        return collect([
-            ['id' => 1, 'name' => 'Mary', 'email' => 'mary@mary-ui.com', 'age' => 23],
-            ['id' => 2, 'name' => 'Giovanna', 'email' => 'giovanna@mary-ui.com', 'age' => 7],
-            ['id' => 3, 'name' => 'Marina', 'email' => 'marina@mary-ui.com', 'age' => 5],
-        ])
-            ->sortBy([[...array_values($this->sortBy)]])
-            ->when($this->search, function (Collection $collection) {
-                return $collection->filter(fn(array $item) => str($item['name'])->contains($this->search, true));
-            });
-    }
+{
+    return User::query()
+        ->withAggregate('country', 'name')
+        ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
+        ->orderBy(...array_values($this->sortBy))
+        ->get();
+}
 
     public function with(): array
     {
