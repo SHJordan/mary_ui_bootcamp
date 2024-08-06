@@ -79,6 +79,8 @@
     <x-toast />
 
     {{-- Spotlight --}}
-    <x-spotlight/>
+    <x-spotlight
+        shortcut="meta.slash"
+    />
 </body>
 </html>
