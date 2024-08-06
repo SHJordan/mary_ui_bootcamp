@@ -64,10 +64,21 @@
         {{-- The `$slot` goes here --}}
         <x-slot:content>
             {{ $slot }}
+
+            <footer class="flex mt-10">
+                <x-button label="User illustrations by Storyset"
+                          icon="o-heart"
+                          link="https://storyset.com/user"
+                          class="btn-ghost !text-pink-500"
+                          external/>
+            </footer>
         </x-slot:content>
     </x-main>
 
     {{--  TOAST area --}}
     <x-toast />
+
+    {{-- Spotlight --}}
+    <x-spotlight/>
 </body>
 </html>
